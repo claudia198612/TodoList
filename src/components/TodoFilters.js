@@ -1,43 +1,60 @@
 import React from "react";
 import store from '../store'
-import { setShowData } from "../actions/todos";
-
-
-
+import {  setShowData,addTodo } from "../actions/todos";
+import { connect } from "react-redux";
 // ({ data, setData, searchText,setshowData }) 
-import { Space, Tag } from 'antd';
-import {
-    CheckCircleOutlined,
-    ClockCircleOutlined,
-    SyncOutlined,
-  } from '@ant-design/icons';
-export default class TodoFilters extends React.Component{
-    // 这里出了点问题，success、processing、waiting都是拿到的默认值，而不是请求得到的200个数组
+import { Button, Space } from 'antd';
+class TodoFilters extends React.Component{
+    success = this.props.todos.setData.filter(
+      (todo) =>
+        todo.title.toLowerCase().includes(this.props.todos.setSearchText.toLowerCase()) &&
+        (todo.completed === true)
+    );
+  
+    processing = this.props.todos.setData.filter(
+    (todo) =>
+      todo.title.toLowerCase().includes(this.props.todos.setSearchText.toLowerCase()) &&
+      (todo.completed === false)
+  );
+    waiting = this.props.todos.setData.filter(
+    (todo) =>
+      todo
+  );
+
     
-    // success = store.getState().todos.setData.filter(
-    //     (todo) =>
-    //       todo
-    //       .title.toLowerCase().includes(store.getState().todos.setSearchText.toLowerCase()) &&
-    //       (todo.completed === true)
-    //   );
-
-      success = store.getState().todos.setData;
-
-    processing = store.getState().todos.setData.filter(
-      (todo) =>
-        todo.title.toLowerCase().includes(store.getState().todos.setSearchText.toLowerCase()) &&
-        (todo.completed === false)
-    );
-    waiting = store.getState().todos.setData.filter(
-      (todo) =>
-        todo
-    );
-
-    handleClick = (data) => {
-        store.dispatch(setShowData(data));
-        console.log("sucess:")
-        console.log(this.success)
+  handleClick = (filterType) => {
+    // ...
+    if (filterType === "add") {
+      const newTodo = {
+        userId: 1,
+        id: Date.now(),
+        title: "",
+        completed: false,
+      };
+      this.props.addTodo(newTodo);
     }
+
+    if (filterType === "completed") {
+      const completedTodos = this.props.todos.setData.filter(
+        (todo) => todo.completed === true
+      );
+      this.props.sendActionShow(completedTodos);
+    }
+
+
+    let filteredData = [];
+    if (filterType === "uncompleted") {
+      filteredData = this.props.todos.setData.filter((todo) => !todo.completed);
+      this.props.sendAction(filteredData);
+    }
+    
+    if (filterType === "all") {
+      filteredData = this.props.todos.setData;
+      this.props.sendAction(filteredData);
+    }
+    
+    // ...
+  };
 
 
     componentDidMount(){
@@ -48,37 +65,43 @@ export default class TodoFilters extends React.Component{
     }
     render(){
         return (
-            <>
-            <Space size={[0, 8]} wrap>
-            <Tag icon={<CheckCircleOutlined />} color="success"  onClick={()=>{this.handleClick(this.success)}}>
-                Success
-            </Tag>
-            <Tag icon={<SyncOutlined spin />} color="processing" onClick={()=>{this.handleClick(this.processing)}}>
-                Processing
-            </Tag>
-            <Tag icon={<ClockCircleOutlined />} color="default" onClick={()=>{this.handleClick(this.waiting)}}>
-                All
-            </Tag>
+          
+            <Space style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "400px", // 修改宽度为 400px
+              margin:'20px'
+            }}>
+            <Button type="primary" onClick={() => this.handleClick("add")} style={{backgroundColor: '#E0E0E0',color: '#000000' }}>添加</Button>
+            <Button type="primary" onClick={() => this.handleClick("completed")} style={{backgroundColor: '#E0E0E0',color: '#000000' }}>已完成</Button>
+            <Button type="primary" onClick={() => this.handleClick("uncompleted")} style={{backgroundColor: '#E0E0E0',color: '#000000' }}>未完成</Button>
+            <Button type="primary" onClick={() => this.handleClick("all")} style={{backgroundColor: '#E0E0E0',color: '#000000' }}>全部</Button>
             </Space>
-            </>
           );
     }
+    // #E0E0E0
 
   }
 
-//   onClick={(e) => setshowData(waiting)}
+  const mapDispatchToProps = (dispatch)=>{
+    return {
+      sendAction:(data)=>{
+        dispatch(setShowData(data))
+      },
+      sendActionShow:(date)=>{
+        dispatch(
+            setShowData(date)
+        );
+    },
+    addTodo: (todo) => {
+      dispatch(addTodo(todo));
+    },
+    }
+  }
+  const mapStateToProps = (state) => {
+    // console.log(state)
+    return state;
+  };
+  export default connect(mapStateToProps,mapDispatchToProps)(TodoFilters)
 
-
-//   return (
-//     <Space size={[0, 8]} wrap>
-//       <Tag icon={<CheckCircleOutlined />} color="success" onClick={(e) => setshowData(success)}>
-//         Success
-//       </Tag>
-//       <Tag icon={<SyncOutlined spin />} color="processing" onClick={(e) => setshowData(processing)}>
-//         Processing
-//       </Tag>
-//       <Tag icon={<ClockCircleOutlined />} color="default" onClick={(e) => setshowData(waiting)}>
-//         All
-//       </Tag>
-//     </Space>
-//   );

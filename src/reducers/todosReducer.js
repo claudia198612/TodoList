@@ -1,26 +1,17 @@
 const initialState = {
-  setData: [
-      {
-        "userId": 1,
-        "id": 11,
-        "title": "vero rerum temporibus dolor",
-        "completed": true
-        },
-        {
-        "userId": 1,
-        "id": 12,
-        "title": "ipsa repellendus fugit nisi",
-        "completed": true
-        },
-        {
-        "userId": 1,
-        "id": 13,
-        "title": "et doloremque nulla",
-        "completed": false
-        }
-    ],
-    setShowData: [],
-    setSearchText: "假设自己搜索输入的值",
+    setData: [{
+      "userId": 1,
+      "id": 1,
+      "title": "写作业",
+      "completed": false
+      }],
+    setShowData: [{
+      "userId": 1,
+      "id": 1,
+      "title": "写作业",
+      "completed": false
+      }],
+    setSearchText: "",
   };
   
   const todosReducer = (state = initialState, action) => {
@@ -29,9 +20,35 @@ const initialState = {
         // 覆盖
         return {  ...state, ...action  };
       case "SET_SHOW_DATA":
-        return {  ...state, action  };
+        return {  ...state, ...action  };
       case "SET_SEARCH_TEXT":
         return { ...state, action };
+      case "TOGGLE_COMPLETED":
+        return {
+          ...state,
+          setData: state.setData.map((item) =>
+            item.id === action.id ? { ...item, completed: !item.completed } : item
+          ),
+        };
+      case "UPDATE_TODO":
+        return {
+          ...state,
+          setData: state.setData.map((item) =>
+            item.id === action.id ? { ...item, title: action.newTitle } : item
+          ),
+        };
+      case "DELETE_TODO":
+        return {
+          ...state,
+          setData: state.setData.filter((item) => item.id !== action.id),
+        };
+      
+      case "ADD_TODO":
+        return {
+          ...state,
+          setData: [...state.setData, action.todo],
+          setShowData: [...state.setShowData, action.todo],
+        };
       default:
         return state;
     }
