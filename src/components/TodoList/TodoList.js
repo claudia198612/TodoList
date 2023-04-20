@@ -1,67 +1,73 @@
 import React from "react";
-import store from '../store'
+import store from '../../store'
 import { List,Button, Space} from 'antd';
 import { connect } from "react-redux";
-import {setShowData,toggleCompleted,updateTodo,deleteTodo } from '../actions/todos'
+import {setShowData,toggleCompleted,updateTodo,deleteTodo } from '../../actions/todos'
+import {  handleInputBlurHandler,
+          handleDeleteHandler,
+          handleToggleHandler,
+          handleEditHandler,
+          handleInputChangeHandler 
+        } from './TodoListHandlers';
 
 class TodoList extends React.Component{
+
   constructor(props) {
     super(props);
     this.state = {
       editingTodoId: null,
     };
+    
   }
-
   componentDidUpdate(prevProps) {
     if (this.props.todos.setData !== prevProps.todos.setData) {
       this.props.sendAction(this.props.todos.setData);
     }
   }
-  handleInputBlur = () => {
-    this.setState({ editingTodoId: null });
-  };
-  handleDelete = (id) => {
-    this.props.deleteTodo(id);
+
+  componentDidMount(){
+      store.subscribe(()=>{
+      })
+  }
+  // 将TodoList中的handleInputBlur方法改为handleInputBlurMethod，
+  // 将TodoListHandlers中的handleInputBlur方法改为handleInputBlurHandler。
+  // 这样两个方法的名称就不同了，可以方便区分。
+
+  handleInputBlurMethod = () => {
+    handleInputBlurHandler.call(this);
   };
 
-    componentDidMount(){
-        store.subscribe(()=>{
-        })
-    }
-    handleToggle = (item) => {
-      this.props.toggleCompleted(item.id);
-      this.props.sendAction(this.props.todos.setData);
-      console.log(this.props.todos)
-      this.setState({})
+  handleDeleteMethod = (id) => {
+    handleDeleteHandler.call(this, id);
+  };
 
-    };
-    handleEdit = (item) => {
-      this.setState({ editingTodoId: item.id });
-    };
-    handleInputChange = (event, item) => {
-      if (event.key === "Enter") {
-        this.props.updateTodo(item.id, event.target.value);
-        this.setState({ editingTodoId: null });
-        console.log(this.props);
-      }
-    };
+  handleToggleMethod = (item) => {
+    handleToggleHandler.call(this, item);
+  };
+
+  handleEditMethod = (item) => {
+    handleEditHandler.call(this, item);
+  };
+
+  handleInputChangeMethod = (event, item) => {
+    handleInputChangeHandler.call(this, event, item);
+  };
 
     render(){
         return (
           <>
             <List
-            
             style={{ width: '500px' }}
             bordered
             dataSource={this.props.todos.setShowData}
             renderItem={(item) => (
               <List.Item style={{ display: 'flex', alignItems: 'center' }}>
-                <input type="checkbox" checked={item.completed} onChange={() => this.handleToggle(item)}></input>
+                <input type="checkbox" checked={item.completed} onChange={() => this.handleToggleMethod(item)}></input>
                         {this.state.editingTodoId === item.id ? (
                   <input
                     defaultValue={item.title}
-                    onKeyPress={(event) => this.handleInputChange(event, item)}
-                    onBlur={this.handleInputBlur}
+                    onKeyPress={(event) => this.handleInputChangeMethod(event, item)}
+                    onBlur={this.handleInputBlurMethod}
                   />
                 ) : (
                   item.title
@@ -70,24 +76,21 @@ class TodoList extends React.Component{
                   <Button 
                   type="primary" 
                   style={{ marginLeft: 'auto'}} 
-                  onClick={() => this.handleEdit(item)} >编辑</Button>
+                  onClick={() => this.handleEditMethod(item)} >编辑</Button>
                   <Button 
                   type="primary" 
                   danger 
                   style={{ marginLeft: 'auto' }} 
-                  onClick={() => this.handleDelete(item.id)}>删除</Button>
+                  onClick={() => this.handleDeleteMethod(item.id)}>删除</Button>
                 </Space>
               </List.Item>
-              
             )}
           />
           </>
           );
     }
   }
-
   const mapDispatchToProps = (dispatch)=>{
-
     return {
       sendAction:(data)=>{
         dispatch(setShowData(data))
@@ -102,12 +105,8 @@ class TodoList extends React.Component{
         dispatch(deleteTodo(id));
       },
     }
-
   }
-
   const mapStateToProps = (state) => {
-    // console.log(state)
     return state;
   };
-
   export default connect(mapStateToProps,mapDispatchToProps)(TodoList)

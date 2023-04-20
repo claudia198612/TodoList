@@ -1,27 +1,12 @@
 import React from "react";
-import store from '../store'
-import {  setShowData,addTodo } from "../actions/todos";
+import store from '../../store'
+import {  setShowData,addTodo } from "../../actions/todos";
 import { connect } from "react-redux";
-// ({ data, setData, searchText,setshowData }) 
+import { handleAddTodo, handleCompletedFilter, handleUncompletedFilter, handleAllFilter } from './TodoFiltersHandlers';
+
 import { Button, Space } from 'antd';
 class TodoFilters extends React.Component{
-    success = this.props.todos.setData.filter(
-      (todo) =>
-        todo.title.toLowerCase().includes(this.props.todos.setSearchText.toLowerCase()) &&
-        (todo.completed === true)
-    );
-  
-    processing = this.props.todos.setData.filter(
-    (todo) =>
-      todo.title.toLowerCase().includes(this.props.todos.setSearchText.toLowerCase()) &&
-      (todo.completed === false)
-  );
-    waiting = this.props.todos.setData.filter(
-    (todo) =>
-      todo
-  );
-
-    
+   
   handleClick = (filterType) => {
     // ...
     if (filterType === "add") {
@@ -31,35 +16,28 @@ class TodoFilters extends React.Component{
         title: "",
         completed: false,
       };
-      this.props.addTodo(newTodo);
+      handleAddTodo(this.props.addTodo, newTodo);
     }
 
     if (filterType === "completed") {
-      const completedTodos = this.props.todos.setData.filter(
-        (todo) => todo.completed === true
-      );
-      this.props.sendActionShow(completedTodos);
+      handleCompletedFilter(this.props.sendActionShow, this.props.todos.setData);
     }
-
-
-    let filteredData = [];
+    
+    
     if (filterType === "uncompleted") {
-      filteredData = this.props.todos.setData.filter((todo) => !todo.completed);
-      this.props.sendAction(filteredData);
+      handleUncompletedFilter(this.props.sendAction, this.props.todos.setData);
     }
     
     if (filterType === "all") {
-      filteredData = this.props.todos.setData;
-      this.props.sendAction(filteredData);
+      handleAllFilter(this.props.sendAction, this.props.todos.setData);
     }
+
     
-    // ...
   };
 
 
     componentDidMount(){
         store.subscribe(()=>{
-            
             this.setState({})
         })
     }

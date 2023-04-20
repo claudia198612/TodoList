@@ -1,14 +1,14 @@
 import React from "react";
 import { Provider } from 'react-redux';
-import store from '../store';
-import TodoFilters from './TodoFilters'
-import TodoList from './TodoList'
-import TodoSearch from './TodoSearch'
-import { setData,setShowData } from "../actions/todos";
+import store from '../../store';
+import TodoFilters from '../TodoFilters/TodoFilters'
+import TodoList from '../TodoList/TodoList'
+import TodoSearch from '../TodoSearch/TodoSearch'
+import { setData,setShowData } from "../../actions/todos";
 import { connect } from "react-redux";
 import { Card } from 'antd';
 
-function TodoApp(props) {
+function TodoApp() {
   return (
     <Provider store={store}>
     <div
