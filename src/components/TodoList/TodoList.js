@@ -18,6 +18,7 @@ class TodoList extends React.Component{
       editingTodoId: null,
     };
     
+    
   }
   componentDidUpdate(prevProps) {
     if (this.props.todos.setData !== prevProps.todos.setData) {
@@ -33,6 +34,11 @@ class TodoList extends React.Component{
   // 将TodoListHandlers中的handleInputBlur方法改为handleInputBlurHandler。
   // 这样两个方法的名称就不同了，可以方便区分。
 
+
+  // 由于Handler方法在TodoListHandlers.js中定义
+  // 它并不自动绑定到组件实例的上下文。这意味着在Handler方法内部，如果你尝试访问this，
+  // 它将是undefined。
+  // 为了解决这个问题，需要在组件的构造函数中使用bind(this)将方法绑定到组件实例。
   handleInputBlurMethod = () => {
     handleInputBlurHandler.call(this);
   };

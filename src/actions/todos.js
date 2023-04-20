@@ -13,7 +13,7 @@ export const setShowData = (data) => ({
 export const setSearchText = (text) => ({
   // 用来存储搜索框里的内容
     type: "SET_SEARCH_TEXT",
-    setSearchText: "假设自己搜索输入的值",
+    setSearchText: text,
   });
 
   export const toggleCompleted = (id) => ({

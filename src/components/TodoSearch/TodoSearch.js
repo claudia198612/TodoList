@@ -1,12 +1,12 @@
 import React from "react";
 import { Space, Input } from 'antd';
-import store from '../../store';
 
 import { handleChange, subscribeToStore } from './todoSearchHandlers';
 
 const { Search } = Input;
 
 export default class TodoSearch extends React.Component {
+
     // -----------------------------constructor-----------------------------------------
     // constructor是用于初始化组件的状态和方法
     // constructor有以下目的：
@@ -80,7 +80,7 @@ export default class TodoSearch extends React.Component {
             allowClear
             enterButton="Search"
             size="large"
-            onSearch={store.getState().todos.setSearchText}
+            // onSearch={store.getState().todos.setSearchText}
             onChange={this.handleChange}
           />
         </Space>

@@ -25,7 +25,6 @@ export const handleInputBlurHandler = function() {
     if (event.key === "Enter") {
       this.props.updateTodo(item.id, event.target.value);
       this.setState({ editingTodoId: null });
-      console.log(this.props);
     }
   };
   

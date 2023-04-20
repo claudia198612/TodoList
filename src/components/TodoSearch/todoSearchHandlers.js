@@ -1,9 +1,21 @@
 import store from '../../store';
 import { setSearchText } from "../../actions/todos";
+import {setShowData } from '../../actions/todos'
 
-export function handleChange() {
-  store.dispatch(setSearchText());
-}
+// 根据搜索文本过滤数据并更新 Redux store 中的 showData 数据
+function updateShowData() {
+    const { setData, setSearchText } = store.getState().todos;
+    const showData = setData.filter(todo => todo.title.includes(setSearchText));
+    store.dispatch(setShowData(showData));
+  }
+
+export function handleChange(event) {
+    const searchText = event.target.value;
+    store.dispatch(setSearchText(searchText));
+    updateShowData();
+    console.log(searchText)
+
+  }
 
 // subscribeToStore函数充当辅助函数
 // 接收一个名为subscribeFunction的回调函数作为参数。这个函数的作用是在组件挂载后订阅 Redux store 的变化

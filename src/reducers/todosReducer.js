@@ -22,7 +22,7 @@ const initialState = {
       case "SET_SHOW_DATA":
         return {  ...state, ...action  };
       case "SET_SEARCH_TEXT":
-        return { ...state, action };
+        return { ...state, ...action };
       case "TOGGLE_COMPLETED":
         return {
           ...state,
