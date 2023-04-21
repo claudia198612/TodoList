@@ -13,8 +13,6 @@ export function handleChange(event) {
     const searchText = event.target.value;
     store.dispatch(setSearchText(searchText));
     updateShowData();
-    console.log(searchText)
-
   }
 
 // subscribeToStore函数充当辅助函数

@@ -22,9 +22,11 @@ export const handleInputBlurHandler = function() {
   };
   
   export const handleInputChangeHandler = function(event, item) {
+    
     if (event.key === "Enter") {
       this.props.updateTodo(item.id, event.target.value);
       this.setState({ editingTodoId: null });
     }
   };
+  
   

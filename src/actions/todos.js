@@ -1,3 +1,10 @@
+import {getAllTodosFromDB} from '../indexedDB/db'
+
+export const loadDataFromDB = (data) => ({
+  type: "LOAD_DATA_FROM_DB",
+  data,
+});
+
 export const setData = (data) => ({
   // 存储汇总所有的事件
     type: "SET_DATA",
@@ -37,4 +44,13 @@ export const setSearchText = (text) => ({
     todo,
   });
 
+  export const initializeStateFromDB = () => {
+    return async (dispatch) => {
+      const todosFromDB = await getAllTodosFromDB();
+      dispatch({
+        type: "INITIALIZE_STATE_FROM_DB",
+        data: todosFromDB,
+      });
+    };
+  };
   
