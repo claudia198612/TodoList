@@ -54,3 +54,10 @@ export const setSearchText = (text) => ({
     };
   };
   
+
+  export const SET_SELECTED_TIME = "SET_SELECTED_TIME";
+  export const setSelectedTime = (id,time) => ({
+    type: SET_SELECTED_TIME,
+    id,
+    selectedTime: time,
+  });

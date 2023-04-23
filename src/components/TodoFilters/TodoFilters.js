@@ -15,8 +15,10 @@ class TodoFilters extends React.Component{
         id: Date.now(),
         title: "",
         completed: false,
+        selectedTime:Infinity,
       };
       handleAddTodo(this.props.addTodo, newTodo);
+      // console.log(this.props)
     }
 
     if (filterType === "completed") {
@@ -48,7 +50,7 @@ class TodoFilters extends React.Component{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              width: "400px", // 修改宽度为 400px
+              width: "600px", // 修改宽度为 400px
               margin:'20px'
             }}>
             <Button type="primary" onClick={() => this.handleClick("add")} style={{backgroundColor: '#E0E0E0',color: '#000000' }}>添加</Button>

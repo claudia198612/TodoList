@@ -75,7 +75,7 @@ export default class TodoSearch extends React.Component {
       <>
         <Space direction="vertical">
           <Search
-            style={{ width: '500px' }}
+            style={{ width: '600px' }}
             placeholder="input search text"
             allowClear
             enterButton="Search"

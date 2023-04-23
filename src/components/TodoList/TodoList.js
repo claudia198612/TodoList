@@ -1,8 +1,9 @@
 import React from "react";
 import store from '../../store'
-import { List,Button, Space} from 'antd';
+import { List,Button, Space, TimePicker} from 'antd';
+import dayjs from 'dayjs';
 import { connect } from "react-redux";
-import {setShowData,toggleCompleted,updateTodo,deleteTodo } from '../../actions/todos'
+import {setShowData,toggleCompleted,updateTodo,deleteTodo, setSelectedTime } from '../../actions/todos'
 import {  handleInputBlurHandler,
           handleDeleteHandler,
           handleToggleHandler,
@@ -10,12 +11,18 @@ import {  handleInputBlurHandler,
           handleInputChangeHandler 
         } from './TodoListHandlers';
 
-
 // 在类组件中使用React Hooks会导致错误，因此需要将类组件改写为函数组件。
 // 类组件中不能使用React hooks，比如 useEffect()吗?
 // 是的，React hooks 只能在函数组件和自定义 hook 中使用，而在类组件中使用会导致上述错误。
 // 在类组件中，你需要使用生命周期方法来代替 useEffect()。
 // 例如，在类组件中使用 componentDidMount() 和 componentDidUpdate() 方法来实现 useEffect() 的功能。
+const notificationsContainerStyle = {
+  position: "fixed",
+  bottom: "20px",
+  right: "20px",
+  zIndex: 1000,
+};
+
 class TodoList extends React.Component{
 
   constructor(props) {
@@ -23,9 +30,8 @@ class TodoList extends React.Component{
     this.state = {
       editingTodoId: null,
       todos: this.props.todos,
+      selectedTime: null, // 添加 selectedTime 属性
     };
-
-    
   }
   componentDidUpdate(prevProps) {
     if (this.props.todos.setData !== prevProps.todos.setData) {
@@ -70,12 +76,30 @@ class TodoList extends React.Component{
   handleInputChangeMethod = (event, item, shouldSave) => {
     handleInputChangeHandler.call(this, event, item, shouldSave);
   };
+  handleTimePickerChange = (id,value) => {
+    const hours = value.hour();
+    const minutes = value.minute();
+    const seconds = value.second();
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    this.setState({ selectedTime: totalSeconds });
+
+      // Find the editing todo item
+    const editingTodoItem = this.state.todos.setData.find(
+      (todo) => todo.id === id
+    );
+    const updatedTodoItem = {
+      ...editingTodoItem,
+      selectedTime: totalSeconds,
+    };
+    this.props.setSelectedTime(updatedTodoItem.id, updatedTodoItem.selectedTime);
+  };
 
     render(){
         return (
           <>
+          <div id="notifications-container" style={notificationsContainerStyle}></div>
             <List
-            style={{ width: '500px' }}
+            style={{ width: '600px' }}
             bordered
             dataSource={this.props.todos.setShowData}
             renderItem={(item) => (
@@ -99,6 +123,7 @@ class TodoList extends React.Component{
                   danger 
                   style={{ marginLeft: 'auto' }} 
                   onClick={() => this.handleDeleteMethod(item.id)}>删除</Button>
+                 <TimePicker onChange={(time) => this.handleTimePickerChange(item.id, time)} defaultValue={dayjs('00:00:00', 'HH:mm:ss')} />
                 </Space>
               </List.Item>
             )}
@@ -120,6 +145,9 @@ class TodoList extends React.Component{
       },
       deleteTodo: (id) => {
         dispatch(deleteTodo(id));
+      },
+      setSelectedTime: (id,value) => {
+        dispatch(setSelectedTime(id,value));
       },
     }
   }

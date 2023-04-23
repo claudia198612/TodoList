@@ -1,3 +1,5 @@
+import { messaging } from '../../../src/firebase';
+import { getToken } from 'firebase/messaging';
 // import store from '../../store'
 // import { setShowData, toggleCompleted, updateTodo, deleteTodo } from '../../actions/todos';
 
@@ -21,9 +23,10 @@ export const handleInputBlurHandler = function() {
     this.setState({ editingTodoId: item.id });
   };
   
-  export const handleInputChangeHandler = function(event, item) {
+  export const handleInputChangeHandler = function (event, item, shouldSave = false) {
+    if (event.key === "Enter" || shouldSave) {
       this.props.updateTodo(item.id, event.target.value);
       this.setState({ editingTodoId: null });
+    }
   };
-  
   

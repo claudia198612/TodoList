@@ -97,7 +97,6 @@ const STATIC_ASSETS = [
   '/favicon.ico',
   '/manifest.json',
   '/audio/music.mp3',
-  // 在此处添加其他静态资源
 ];
 // 监听install事件，该事件在Service Worker安装时触发。
 // self指的是service worker自身
@@ -125,15 +124,42 @@ self.addEventListener('install', (event) => {
 });
 // 监听fetch事件，该事件在客户端发起请求时触发。
 self.addEventListener('fetch', (event) => {
-  // 尝试从缓存中匹配请求的资源。如果找到匹配的资源，则返回缓存的资源，否则发起网络请求。
   event.respondWith(
-    // event.respondWith 是 Service Worker 中的一个方法，用于拦截网络请求并返回自定义的响应。
-    // 它接受一个 Promise 对象作为参数，这个 Promise 对象必须 resolve 一个 Response 对象。
     caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+      // 如果找到缓存的响应，直接返回它
+      if (response) {
+        return response;
+      }
+
+      // 否则，创建一个新的请求，以保留 CORS 模式
+      const fetchRequest = event.request.clone();
+      return fetch(fetchRequest, { mode: 'cors' })
+        .then((fetchResponse) => {
+          // 检查我们是否收到了一个有效响应
+          if (
+            !fetchResponse ||
+            fetchResponse.status !== 200 ||
+            fetchResponse.type !== 'basic'
+          ) {
+            return fetchResponse;
+          }
+
+          // 如果我们收到了一个有效响应，则将其添加到缓存中
+          const responseToCache = fetchResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+
+          return fetchResponse;
+        });
     })
   );
 });
+
+
+
+
+
 // 监听activate事件，该事件在Service Worker激活时触发。在这里，我们可以清理旧的缓存
 self.addEventListener('activate', (event) => {
   // 定义一个白名单数组，其中包含要保留的缓存名称。在这种情况下，我们只保留当前版本的缓存。

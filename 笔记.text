@@ -23,14 +23,15 @@ CLI 是 Command Line Interface 的缩写，翻译过来就是命令行界面。
 在你的应用中集成 Firebase SDK 并配置 Firebase Cloud Messaging。
 1、在 updateTodo 方法中添加 Firebase Cloud Messaging 的代码。首先，获取一个对 Firebase Messaging 实例的引用：const messaging = firebase.messaging();
 
-
-
+npx与npm有什么区别?
+npm是Node.js 5.2.0及更高版本中包含的一个工具,是用于安装和管理包的工具，而npx是用于直接运行Node.js包的可执行文件的工具。
+npx它允许你在不全局安装包的情况下运行命令行工具。例如，你可以使用npx create-react-app my-app命令来创建一个新的React项目，而不必先安装create-react-app包。
 
 Firebase SDK 是什么？
 Firebase SDK（Software Development Kit）是一套针对开发者提供的软件开发工具包，用于构建基于 Firebase 平台的应用程序。
 
-
-
+405是什么代码?
+表示客户端尝试使用不被允许的HTTP方法请求服务器资源。
 
 
 

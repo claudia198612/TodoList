@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // if ('serviceWorker' in navigator)为什么'serviceWorker'要写成字符串呢？'serviceWorker'不是navigator的属性吗？
 
