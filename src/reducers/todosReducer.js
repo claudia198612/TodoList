@@ -1,60 +1,22 @@
-import {addTodoToDB} from '../indexedDB/db'
 import { updateIndexedDB } from "../indexedDB/db";
 
 const initialState = {
   id:1,
   setData: [
-    {
-      "userId": 1,
-      "id": 1,
-      "title": "写作业",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 2,
-      "title": "看电影",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": 3,
-      "title": "打游戏",
-      "completed": false
-    }
   ],
   setShowData: [
-    {
-      "userId": 1,
-      "id": 1,
-      "title": "写作业",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 2,
-      "title": "看电影",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": 3,
-      "title": "打游戏",
-      "completed": false
-    }
   ],
   setSearchText: "",
 };
 
   // 添加初始数据到 IndexedDB
-  addTodoToDB(initialState);
+
 
 
   const todosReducer = (state = initialState, action) => {
-    console.log('todosReducer: ')
-    console.log(state)
     switch (action.type) {
       case "SET_DATA":
+  
         // 覆盖
         return {  ...state, ...action  };
       case "SET_SHOW_DATA":

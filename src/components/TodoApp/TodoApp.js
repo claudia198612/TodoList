@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Provider } from 'react-redux';
-import store from '../../store';
-import TodoFilters from '../TodoFilters/TodoFilters'
-import TodoList from '../TodoList/TodoList'
-import TodoSearch from '../TodoSearch/TodoSearch'
-import { setData,setShowData } from "../../actions/todos";
+import React, { useState, useEffect } from "react";
+import { Provider, useDispatch } from "react-redux";
+import store from "../../store";
+import TodoFilters from "../TodoFilters/TodoFilters";
+import TodoList from "../TodoList/TodoList";
+import TodoSearch from "../TodoSearch/TodoSearch";
+import { setData, setShowData } from "../../actions/todos";
 import { connect } from "react-redux";
-import { Card } from 'antd';
-import {initializeStateFromDB} from '../../actions/todos'
+import { Card } from "antd";
+import { initializeStateFromDB } from "../../actions/todos";
+import { FloatButton } from 'antd';
+import { CustomerServiceOutlined } from '@ant-design/icons';
 
 
 function TodoApp() {
+  const [isPlaying, setIsPlaying] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,7 +26,17 @@ function TodoApp() {
   // 2.useEffect 更加灵活，因为它可以模拟多个生命周期方法（如 componentDidMount、componentDidUpdate 和 componentWillUnmount），并根据依赖数组的变化来决定何时执行副作用。
   // 3.useEffect 可以提供一个可选的清理函数，用于在组件卸载或重新执行副作用前执行清理操作。
 
-
+  // 这里是自动使用了开放的静态资源
+  const [audio] = useState(new Audio("/audio/music.mp3"));
+  audio.loop = true; // 设置循环播放
+  const togglePlay = () => {
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
 
   return (
     <Provider store={store}>
@@ -50,6 +62,22 @@ function TodoApp() {
           <TodoList style={{ margin: '0px auto' }} />
         </div>
       </Card>
+      <div
+        style={{
+          position: 'fixed',
+          right: '20px',
+          bottom: '20px',
+        }}
+      >
+      {/* <Button type="primary" onClick={togglePlay} >{isPlaying ? "音乐停止" : "音乐播放"}</Button> */}
+      <FloatButton
+      shape="circle"
+      onClick={togglePlay}
+      type={isPlaying ? "primary" : "danger"}
+      style={{ right: 94 }}
+      icon={<CustomerServiceOutlined />}
+    />
+      </div>
     </div>
   </Provider>
   );

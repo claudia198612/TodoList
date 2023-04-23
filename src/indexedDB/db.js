@@ -63,7 +63,6 @@ export async function getAllTodosFromDB() {
     const transaction = db.transaction('todos', 'readonly');
     const store = transaction.objectStore('todos');
     const todos = await store.getAll();
-    console.log('Todos fetched from DB', todos);
     return todos;
 }
   

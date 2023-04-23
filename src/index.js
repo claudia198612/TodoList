@@ -13,6 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // 在这种情况下，属性名称需要作为字符串提供。例如，navigator['serviceWorker']。
 
 // 这句代码检查 navigator 对象是否包含 serviceWorker 属性，以确定浏览器是否支持 Service Workers。
+
 if ('serviceWorker' in navigator) {
   // 在页面加载完成后添加了一个事件监听器。页面加载完成时，会触发传入的回调函数。
   window.addEventListener('load', () => {

@@ -40,7 +40,6 @@ class TodoList extends React.Component{
     store.subscribe(() => {
       const todos = store.getState().todos;
       this.setState({ todos });
-      console.log('todos 变化了：', todos);
     });
   }
   // 将TodoList中的handleInputBlur方法改为handleInputBlurMethod，
@@ -68,8 +67,8 @@ class TodoList extends React.Component{
     handleEditHandler.call(this, item);
   };
 
-  handleInputChangeMethod = (event, item) => {
-    handleInputChangeHandler.call(this, event, item);
+  handleInputChangeMethod = (event, item, shouldSave) => {
+    handleInputChangeHandler.call(this, event, item, shouldSave);
   };
 
     render(){
@@ -83,11 +82,10 @@ class TodoList extends React.Component{
               <List.Item style={{ display: 'flex', alignItems: 'center' }}>
                 <input type="checkbox" checked={item.completed} onChange={() => this.handleToggleMethod(item)}></input>
                         {this.state.editingTodoId === item.id ? (
-                  <input
-                    defaultValue={item.title}
-                    onKeyPress={(event) => this.handleInputChangeMethod(event, item)}
-                    onBlur={this.handleInputBlurMethod}
-                  />
+                        <input
+                        defaultValue={item.title}
+                        onBlur={(event) => this.handleInputChangeMethod(event, item, true)}
+                        />
                 ) : (
                   item.title && item.title.substring(0, 20)
                 )}
