@@ -34,7 +34,6 @@ const messaging = getMessaging(app);
 Notification.requestPermission().then((permission) => {
   if (permission === "granted") {
     console.log("Notification permission granted.");
-
     // 获取 FCM 令牌
     getToken(messaging, { vapidKey: 'BA4fB06o5R5uqiEhyRxPEpFpiXzzrARr5oBmdbc-CInVW0PA8ve0aWWkMx8i6Qx5j7c9jz0ZtCPtaD7YSybLPg4' })
       .then((token) => {

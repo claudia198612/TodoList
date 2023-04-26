@@ -51,3 +51,114 @@ PWA 应用相比于内嵌于微信的小程序来讲，所能调用的系统权�
 - 新闻/阅读类（少数派 / Flipboard）
 - 笔记类（语雀 / Flomo）
 - 社交平台（微博 / Instagram）
+
+
+
+## 消息推送怎么实现的？
+
+new Notification(title, options)
+
+浏览器的：Notification需要用户的许可才能显示。浏览器会在第一次调用 `new Notification()` 时，弹出一个询问框，询问用户是否允许该网站显示通知。只有在用户授权后，通知才能被显示。如果用户没有授权，创建通知的代码仍然可以运行，但是通知不会被显示出来。基于 `new Notification(title, options)` 的消息提醒是基于 Web Notifications API 实现的。这个 API 是 HTML5 规范的一部分，为浏览器提供了创建本地系统通知的功能，这些通知类似于操作系统级别的通知，允许网站在用户不在该网站时提供通知消息。
+
+要使用 Web Notifications API 创建一个通知，需要调用 `Notification` 构造函数，并传递一个标题和一个选项对象。选项对象包含其他配置通知的属性，例如通知正文、图标和行为。一旦创建了通知，它将被添加到用户的系统通知中心，通常是在屏幕的右上角或左上角。
+
+需要注意的是，浏览器通常会限制通知的数量和频率，以保护用户免受滥用和干扰。此外，浏览器还允许用户控制哪些网站可以发送通知，并可以随时在浏览器设置中更改这些设置。
+
+firebase的消息提醒：根据 Firebase 文档，需要使用 `getMessaging(app)` 返回一个 messaging 对象，然后使用 `requestPermission()` 请求用户许可，并通过 `onTokenRefresh()` 监听令牌刷新事件，以便在令牌更新时获得新的令牌。
+
+
+
+
+
+## 怎么实现离线访问的?
+
+1.使用 Service Worker：Service Worker 是一种 JavaScript Worker，它可以在后台运行并处理网络请求。使用 Service Worker 可以缓存应用程序的资源，使得应用程序可以在离线状态下继续工作。
+
+2.使用 IndexedDB：IndexedDB 是一种在客户端存储大量结构化数据的方式，它可以在离线状态下访问和操作数据。使用 IndexedDB 可以存储应用程序的数据，使得应用程序可以在离线状态下继续工作。
+
+3.使用 Application Cache：Application Cache 允许浏览器在离线状态下缓存整个应用程序，包括 HTML、CSS、JavaScript 和其他静态资源。Application Cache 是 HTML5 中的一项特性。????
+
+
+
+## 离线状态下存储和检索数据怎么实现的？
+
+### IndexedDB怎么使用的？实现了什么功能？
+
+IndexedDB 是一个允许在离线状态下存储和检索数据的 API
+
+IndexedDB是浏览器提供的一种客户端数据库，它可以帮助开发者在浏览器中存储和检索结构化数据。它可以用于构建离线应用程序和提供更快的访问速度。
+
+IndexedDB使用JavaScript API来操作存储在浏览器中的对象存储空间。它允许开发者在本地存储大量数据，并且可以支持离线访问和高性能查询操作。
+
+IndexedDB的使用可以通过以下步骤实现：
+
+1. 打开数据库：使用IndexedDB API中的open()方法打开数据库。
+2. 创建对象存储空间：使用IndexedDB API中的createObjectStore()方法创建对象存储空间。
+3. 存储数据：使用对象存储空间的add()或put()方法向对象存储空间添加数据。
+4. 读取数据：使用对象存储空间的get()或getAll()方法从对象存储空间中读取数据。
+5. 更新数据：使用对象存储空间的put()方法更新对象存储空间中的数据。
+6. 删除数据：使用对象存储空间的delete()方法从对象存储空间中删除数据。
+
+使用IndexedDB可以实现一些功能，例如：
+
+1. 在浏览器中存储数据，可以支持离线访问。
+2. 高性能的查询操作，可以使用对象存储空间的索引。
+3. 支持事务操作，确保多个数据操作的一致性和原子性。
+4. 可以存储结构化数据，并且可以自定义对象存储空间的数据结构。
+5. 可以存储大量的数据，而不会影响应用程序的性能。
+
+
+
+
+
+
+
+### 该项目中service worker实现了什么功能？
+
+在该项目中，Service Worker主要实现了两个功能：缓存和离线访问。
+
+通过Service Worker，我们可以在客户端创建一个缓存，将页面所需要的资源（如CSS、JavaScript、图像、字体等）存储在其中。这样，在用户第一次访问网站时，这些资源就会被下载并缓存，以后再次访问同样的页面时，就可以从缓存中读取这些资源，而不必再次下载。这样可以大大提高页面的加载速度和用户体验。
+
+同时，Service Worker还可以实现离线访问功能。当用户处于离线状态时，Service Worker可以从缓存中读取所需的资源，使用户可以继续访问页面，而不必等待所有资源都下载完毕。这对于一些对稳定网络环境有要求的应用（如PWA）来说，是非常重要的功能。
+
+在该项目中，我们使用Service Worker缓存了TodoList应用程序中需要的所有资源，并实现了离线访问功能。这样，当用户离线时，仍然可以通过访问缓存中的资源来使用应用程序，而不必完全失去应用程序的使用能力。
+
+使用Service Worker的基本步骤如下：
+
+1. 创建Service Worker文件，并在HTML页面中注册。
+2. 在Service Worker中监听install事件，缓存所需资源。
+3. 在Service Worker中监听fetch事件，从缓存中返回资源，实现离线访问。
+4. 如果需要更新Service Worker，修改Service Worker文件并在HTML页面中重新注册。
+5. 在Service Worker中监听activate事件，更新缓存。
+
+需要注意的是，Service Worker只能在HTTPS协议下使用，并且会存在一定的安全风险，需要谨慎使用。
+
+
+
+Service Worker 有以下生命周期：
+
+1. 注册：在注册时，Service Worker 会下载并缓存资源。可以在 `window` 对象上调用 `navigator.serviceWorker.register()` 方法来注册一个 Service Worker。
+2. 安装：在安装时，Service Worker 将会进行缓存的初始化，并在此期间打开所需的缓存文件。这一步通过在 Service Worker 脚本中添加 `install` 事件监听器来实现。
+3. 激活：在激活时，Service Worker 会接管所有与之相关的客户端，但是在这个时候，Service Worker 中的缓存并没有被删除，因此需要在 `activate` 事件监听器中手动清理旧的缓存，以确保不会出现旧的缓存文件被遗留在客户端中。
+4. 运行：Service Worker 运行在自己的线程中，它可以拦截到所有的网络请求，并在请求被发送到服务器之前修改、响应或忽略它们。它可以被用来进行离线缓存、Web 推送通知、后台同步等操作。
+5. 解除：当 Service Worker 不再被需要时，可以使用 `navigator.serviceWorker.ready` 对象上的 `unregister()` 方法来解除其注册。
+
+这些生命周期的每一步都提供了对应的事件监听器，使开发者能够在每个阶段执行需要的操作。
+
+
+
+### IndexedDB 和 Service Worker
+
+IndexedDB 和 Service Worker 是两个独立的 Web API，但是它们可以结合使用来提供离线访问和缓存管理的功能。
+
+IndexedDB 是浏览器内置的数据库系统，可以让 Web 应用程序在客户端存储和检索结构化数据。在该项目中，IndexedDB 被用来存储 TodoList 应用程序中的数据，如待办事项列表和已完成事项列表。这样可以让用户在离线时也能够使用应用程序，当用户重新联网时，数据会自动同步更新到远程数据库。
+
+Service Worker 是一种在浏览器后台运行的 JavaScript 脚本，可以在不影响页面交互的情况下处理网络请求和响应。在该项目中，Service Worker 被用来实现离线访问和缓存功能。当用户访问应用程序时，Service Worker 会缓存应用程序的静态资源和数据，以提高应用程序的性能和响应速度。如果用户在没有网络连接的情况下访问应用程序，Service Worker 仍然可以从缓存中加载数据，以保证应用程序的可用性。
+
+
+
+
+
+## firebase使用的是什么协议？
+
+使用Firebase时，客户端与服务器端的通讯使用的是HTTPS协议。Firebase提供了安全的HTTPS API来处理客户端与服务器之间的通信。HTTPS协议可以确保数据在传输过程中的加密和安全性。

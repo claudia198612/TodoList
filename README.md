@@ -6,7 +6,7 @@ TodoList PWA是一个基于React、React-Redux、JS、Ant Design、IndexedDB、S
 
 此外，TodoList PWA还使用了Firebase的实时数据库和消息推送功能，以帮助用户在多个设备之间同步数据和获得即时通知。该应用程序还通过使用IndexedDB和Service Worker来提供离线访问和缓存管理，从而允许用户在离线时使用应用程序。
 
-TodoList PWA是一个功能强大、易于使用和高度可定制的任务管理应用程序，可帮助用户提高生产力、组织时间和保持专注。
+TodoList PWA是一个功能强大、易于使用的任务管理应用程序，可帮助用户提高生产力、组织时间和保持专注。
 
 ## 安装和使用🚀
 
@@ -19,7 +19,7 @@ TodoList PWA是一个功能强大、易于使用和高度可定制的任务管�
 
 ### 服务器访问
 
-使用Chrome浏览器<img src="C:\Users\Lee\AppData\Roaming\Typora\typora-user-images\image-20230424061203637.png" alt="image-20230424061203637" style="zoom:5%;" />访问https://todolist-d3b87.web.app/ 
+使用Chrome浏览器访问https://todolist-d3b87.web.app/ 
 
 ### 使用
 
@@ -84,7 +84,7 @@ TodoList PWA是一个功能强大、易于使用和高度可定制的任务管�
 - IndexedDB：一种在浏览器中存储和检索结构化数据的 API。项目使用 IndexedDB 来存储 TodoList 应用程序中的数据。
 - Service worker：一种 Web Worker，用于在 Web 应用程序运行时提供后台脚本功能。项目使用 service worker 来实现离线访问和缓存功能。
 - Firebase 部署：Firebase 是一个由 Google 提供的移动和 Web 应用程序开发平台，包括数据库、身份验证、分析和云存储等服务。你的项目使用 Firebase 部署技术来将应用程序部署到云端。
-- 消息推送技术：使用 Firebase Cloud Messaging（FCM）来实现 Web 应用程序的消息推送功能。FCM 是一种跨平台消息传递解决方案，可以向 Android、iOS 和 Web 应用程序发送消息。在你的项目中，当你添加一个新的 todo 项时，会向用户发送消息推送通知。
+- 消息推送技术：使用 Firebase Cloud Messaging（FCM）来实现 Web 应用程序的消息推送功能。FCM 是一种跨平台消息传递解决方案，可以向 Android、iOS 和 Web 应用程序发送消息。当用户设定截止时间时，还剩5分钟的时候，会向用户发送消息推送通知。
 
 ## 开发环境🖥️
 
